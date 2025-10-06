@@ -1,4 +1,4 @@
-# [Practica GitHub Flow]
+# Practica GitHub Flow
 
 Proyecto de grupo con metodología **GitHub Flow**.
 
