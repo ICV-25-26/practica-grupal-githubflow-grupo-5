@@ -1,0 +1,234 @@
+/* modern-ui-theme.css
+   A clean, accessible, responsive CSS theme file.
+   - CSS variables for easy theming
+   - Reset + sensible defaults
+   - Components: container, card, buttons, inputs, navbar, hero, footer
+   - Utility classes: flex, grid, spacing, text helpers
+   - Dark mode support (prefers-color-scheme) and theme switching via [data-theme]
+*/
+
+:root{
+  /* COLOR PALETTE */
+  --bg: 255 255 255;                /* stored as RGB for convenient alpha use */
+  --surface: 250 251 253;
+  --muted: 100 116 139;
+  --text: 17 24 39;
+  --accent: 99 102 241; /* indigo-500 */
+  --accent-2: 16 185 129; /* emerald-500 */
+  --danger: 239 68 68;
+
+  /* SPACING & TYPOGRAPHY */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --gap: 1rem;
+  --max-width: 1100px;
+  --fw-regular: 400;
+  --fw-medium: 600;
+  --fw-bold: 700;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+  /* ELEVATION */
+  --shadow-sm: 0 1px 2px rgba(2,6,23,0.06);
+  --shadow-md: 0 8px 24px rgba(2,6,23,0.08);
+  --glass: rgba(var(--bg)/0.55);
+
+  /* TRANSITIONS */
+  --fast: 150ms;
+  --normal: 280ms;
+}
+
+/* Theme variants via data-theme attribute */
+:root[data-theme="dark"]{
+  --bg: 8 10 18;
+  --surface: 14 17 23;
+  --muted: 148 163 184;
+  --text: 226 232 240;
+  --accent: 99 102 241;
+  --glass: rgba(255,255,255,0.04);
+}
+
+/* Respect system preference if no explicit data-theme set */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme]){
+    --bg: 8 10 18;
+    --surface: 14 17 23;
+    --muted: 148 163 184;
+    --text: 226 232 240;
+    --glass: rgba(255,255,255,0.04);
+  }
+}
+
+/* ----------------------------------
+   Reset & base
+   ---------------------------------- */
+*{box-sizing: border-box}
+html,body{height:100%}
+html{font-family:var(--font-sans);font-size:16px;line-height:1.45;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background: linear-gradient(180deg, rgba(var(--bg)/1) 0%, rgba(var(--surface)/1) 100%);
+  color: rgb(var(--text));
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+img, picture, video, canvas, svg{display:block;max-width:100%}
+input,button,textarea,select{font:inherit}
+
+a{color:inherit;text-decoration:none}
+
+/* Accessible focus outlines */
+:focus{outline:2px solid transparent;outline-offset:2px}
+:focus-visible{box-shadow:0 0 0 3px rgba(var(--accent)/0.18);border-radius:6px}
+
+/* ----------------------------------
+   Layout helpers
+   ---------------------------------- */
+.container{
+  width:100%;
+  max-width:var(--max-width);
+  margin-left:auto;margin-right:auto;
+  padding-left:1rem;padding-right:1rem;
+}
+.row{display:flex;flex-wrap:wrap;gap:var(--gap)}
+.col{flex:1 1 0;min-width:0}
+
+/* Simple grid utility */
+.grid{display:grid;gap:var(--gap)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:880px){ .grid-3{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:560px){ .grid-2{grid-template-columns:1fr} }
+
+.flex-center{display:flex;align-items:center;justify-content:center}
+.flex-col{display:flex;flex-direction:column}
+.space-between{display:flex;justify-content:space-between;align-items:center}
+
+/* ----------------------------------
+   Cards & surfaces
+   ---------------------------------- */
+.surface{
+  background:linear-gradient(180deg, rgba(var(--surface)/0.95), rgba(var(--surface)/0.9));
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-sm);
+  padding:1rem;
+}
+.card{
+  background:rgba(var(--bg)/1);
+  border-radius:var(--radius-md);
+  padding:1.25rem;
+  box-shadow:var(--shadow-md);
+  border:1px solid rgba(var(--muted)/0.08);
+}
+.card--glass{
+  background: linear-gradient(135deg, rgba(var(--bg)/0.06), rgba(var(--surface)/0.06));
+  backdrop-filter: blur(8px) saturate(120%);
+}
+.card h3{margin:0 0 0.5rem 0;font-weight:var(--fw-medium)}
+
+/* ----------------------------------
+   Typography
+   ---------------------------------- */
+.h1{font-size:clamp(1.6rem,2.8vw,2.6rem);margin:0 0 .4rem;font-weight:var(--fw-bold)}
+.h2{font-size:clamp(1.25rem,2.2vw,1.6rem);margin:0 0 .35rem;font-weight:var(--fw-medium)}
+.lead{font-size:1.05rem;color:rgb(var(--muted));margin-bottom:1rem}
+.small{font-size:.875rem;color:rgb(var(--muted))}
+
+/* ----------------------------------
+   Buttons
+   ---------------------------------- */
+.btn{display:inline-flex;align-items:center;gap:.6rem;border:0;padding:.6rem .9rem;border-radius:10px;cursor:pointer;font-weight:var(--fw-medium);transition:all var(--fast) ease}
+.btn:active{transform:translateY(1px)}
+.btn-primary{
+  background:linear-gradient(90deg, rgba(var(--accent)/1), rgba(var(--accent-2)/1));
+  color:#fff;
+  box-shadow:0 6px 18px rgba(var(--accent)/0.12);
+}
+.btn-ghost{background:transparent;border:1px solid rgba(var(--muted)/0.12);color:rgb(var(--text))}
+.btn-outline{background:transparent;border:1px dashed rgba(var(--muted)/0.12)}
+.btn-sm{padding:.35rem .6rem;font-size:.9rem;border-radius:8px}
+.btn-lg{padding:.9rem 1.2rem;font-size:1.05rem;border-radius:14px}
+
+/* Button icon helper */
+.btn .icon{width:1rem;height:1rem;display:inline-block}
+
+/* ----------------------------------
+   Forms
+   ---------------------------------- */
+.input{width:100%;padding:.6rem .75rem;border-radius:8px;border:1px solid rgba(var(--muted)/0.12);background:rgba(var(--bg)/0.98);transition:box-shadow var(--fast)}
+.input:focus{box-shadow:0 6px 20px rgba(var(--accent)/0.10);border-color:rgba(var(--accent)/0.9)}
+.textarea{min-height:120px;resize:vertical}
+.label{display:block;margin-bottom:.35rem;font-size:.9rem;color:rgb(var(--muted))}
+.field{margin-bottom:1rem}
+
+/* form validation */
+.input.invalid{border-color:rgba(var(--danger)/1);box-shadow:0 4px 14px rgba(var(--danger)/0.08)}
+.helper{font-size:.85rem;color:rgb(var(--muted))}
+
+/* ----------------------------------
+   Navbar / header
+   ---------------------------------- */
+.header{
+  padding:.8rem 0;position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(var(--bg)/0.9), rgba(var(--bg)/0.85));backdrop-filter: blur(6px);
+}
+.brand{font-weight:var(--fw-bold);letter-spacing:.2px}
+.nav{display:flex;gap:1rem;align-items:center}
+.nav a{padding:.4rem .6rem;border-radius:8px}
+.nav a:hover{background:rgba(var(--muted)/0.06)}
+
+/* ----------------------------------
+   Hero
+   ---------------------------------- */
+.hero{
+  padding:3.2rem 0;
+  display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:center;
+}
+@media (max-width:980px){.hero{grid-template-columns:1fr}}
+.hero .kicker{font-size:.9rem;color:rgb(var(--muted));text-transform:uppercase;letter-spacing:1.6px}
+.hero .cta{margin-top:1.25rem}
+
+/* ----------------------------------
+   Footer
+   ---------------------------------- */
+.footer{padding:2rem 0;font-size:.95rem;color:rgb(var(--muted));border-top:1px solid rgba(var(--muted)/0.06)}
+
+/* ----------------------------------
+   Utility classes
+   ---------------------------------- */
+.m-0{margin:0}.mt-1{margin-top:.5rem}.mb-1{margin-bottom:.5rem}
+.p-0{padding:0}.p-1{padding:.5rem}
+.text-center{text-align:center}
+.hidden{display:none}
+
+/* ----------------------------------
+   Micro-interactions & motion
+   ---------------------------------- */
+.fade-in{animation:fadeIn var(--normal) ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pulse{animation:pulse 1600ms infinite}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+/* ----------------------------------
+   Accessibility tweaks
+   ---------------------------------- */
+.reduced-motion{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion: reduce){*{animation-duration:0ms!important;transition-duration:0ms!important}}
+
+/* ----------------------------------
+   Small components examples (ready-to-use)
+   ---------------------------------- */
+/* simple badge */
+.badge{display:inline-flex;align-items:center;padding:.25rem .5rem;border-radius:999px;font-size:.8rem;font-weight:600;background:rgba(var(--accent)/0.09);color:rgb(var(--accent))}
+
+/* avatar */
+.avatar{width:44px;height:44px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(var(--surface)/0.9), rgba(var(--bg)/0.92));box-shadow:var(--shadow-sm);font-weight:700}
+
+/* notification */
+.toast{position:fixed;right:1rem;bottom:1rem;background:rgba(var(--surface)/1);padding:.8rem 1rem;border-radius:10px;box-shadow:var(--shadow-md);border:1px solid rgba(var(--muted)/0.06)}
+
+/* code block */
+.code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;background:linear-gradient(180deg, rgba(var(--bg)/0.03), rgba(var(--surface)/0.03));padding:.75rem;border-radius:8px;font-size:.9rem;overflow:auto}
+
+/* ----------------------------------
+   End of file
+   ---------------------------------- */
